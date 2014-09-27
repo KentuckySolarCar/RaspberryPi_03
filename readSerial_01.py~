@@ -1,0 +1,10 @@
+import serial, time
+from datetime import datetime as dt
+port = "/dev/pts/0"
+ser = serial.Serial(port, 115200, timeout = 0)
+
+for i in range(0, 100):
+    print(chr(i))
+    time.sleep(.5)
+
+

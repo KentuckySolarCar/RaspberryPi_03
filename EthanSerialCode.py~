@@ -1,0 +1,50 @@
+#python 2.7
+
+import serial, time, io, thread
+from datetime import datetime as dt
+
+#the file to be written to
+file = open("data.txt","a")
+
+#writes the begin of test characters
+file.write("\nThis is the beginning of a new test!\n")
+
+def read_from_port( threadName, delay, sio):
+	while True:
+    		data = sio.readline()
+		file.write(data+"\n")
+		file.flush()
+    		time.sleep(delay)
+
+def close_program():
+	file.close()
+
+#all of the ports
+port1 = "/dev/pts/1"
+port3 = "/dev/pts/3"
+port5 = "/dev/pts/5"
+
+#all of the serial
+try:
+	ser1 = serial.Serial(port1, 115200)
+	sio1 = io.TextIOWrapper(io.BufferedRWPair(ser1,ser1,1), encoding = 'ascii')
+	thread.start_new_thread( read_from_port, ("Thread-1", 1, sio1))
+except:
+	print "Could not open port1"
+
+try:
+	ser3 = serial.Serial(port3, 115200)
+	sio3 = io.TextIOWrapper(io.BufferedRWPair(ser3,ser3,1), encoding = 'ascii')
+	thread.start_new_thread( read_from_port, ("Thread-2", 1, sio3))
+except:
+	print "Could not open port3"
+
+try:
+	ser5 = serial.Serial(port5, 115200)
+	sio5 = io.TextIOWrapper(io.BufferedRWPair(ser5,ser5,1), encoding = 'ascii')
+	thread.start_new_thread( read_from_port, ("Thread-3", 1, sio5))
+except:
+	print "Could not open port5"
+
+while 1:
+	pass

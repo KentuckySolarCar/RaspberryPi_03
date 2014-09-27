@@ -1,0 +1,43 @@
+#python 2.7
+
+import serial, time, io, thread, cStringIO
+from datetime import datetime as dt
+from ThreadedSerialIO import ThreadedSerialIO
+
+#the file to be written to
+data_file = open("data.txt","a")
+
+#writes the begin of test characters
+file_data.write("\nThis is the beginning of a new test!\n")
+
+def write_to_file(a,b,c):
+	while True:
+		ser1.saveDataToFile(c)
+		c.flush()
+		time.sleep(b)
+
+def close_program():
+	file.close()
+
+#all of the ports
+ports=["/dev/ttyACM0","/dev/ttyUSB1","/dev/pts/5"]
+port_refresh_rate=[9600,9600,9600]
+port_delay_timer=[10,10,10]
+serial_ports=[]
+
+#all of the serial
+i = 0
+for port in my_ports:
+	serial_ports[i] = ThreadedSerialIO(port, port_refresh_rate[i], port_delay_timer[i])
+	i++
+
+for serial in serial_ports:
+	serial.start()
+
+try:
+	thread.start_new_thread( write_to_file, ("Thread-4", 1, data_file))
+except:
+	print "Could not start the writing thread"
+
+while 1:
+	pass
